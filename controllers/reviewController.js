@@ -1,75 +1,65 @@
 const { reviewService } = require("../services");
-const { asyncWrap } = require("../middleware/errorControl")
+const { asyncWrap } = require("../middleware/errorControl");
+const { BaseError } = require("../util/error");
 
 const getReview = asyncWrap(async (req, res) => {
+    const userId = req.user.id;
     const { productId } = req.params;
-    const { userId } = req.body;
     const { offset, limit } = req.query;
 
-    if ( !productId || !offset || !limit ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+    if ( !productId || !offset || !limit ) throw new BaseError("KEY_ERROR", 400);
 
     const review = await reviewService.getReview( productId, userId, offset, limit );
-    return res.status(200).json({review: review})
+    return res.status(200).json({ review });
 })
 
 const getPhotoReview = asyncWrap(async (req, res) => {
+    const userId = req.user.id;
     const { productId } = req.params;
-    const { userId } = req.body;
     const { offset, limit } = req.query;
 
-    if ( !productId || !offset || !limit ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+    if ( !productId || !offset || !limit ) throw new BaseError("KEY_ERROR", 400);
 
     const review = await reviewService.getPhotoReview( productId, userId, offset, limit );
-    return res.status(200).json({review: review})
+    return res.status(200).json({ review });
 })
 
 const postReview = asyncWrap(async (req, res) => {
-    const { userId, productId, comment } = req.body;
+    const userId = req.user.id;
+    const { productId, comment } = req.body;
     const image = req.file;
 
-    if ( !productId || !comment ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+    if ( !productId || !comment ) throw new BaseError("KEY_ERROR", 400);
     
     await reviewService.postReview( userId, productId, comment, image );
+
     const review = await reviewService.getReview( productId, userId );
-    return res.status(200).json({message:"Create Review Success",review: review})
+    return res.status(200).json({ message : "Create Review Success", review });
 })
 
 const editReview =  asyncWrap(async (req, res) => {
-    const { userId, reviewId, comment, productId } = req.body;
+    const userId = req.user.id;
+    const { reviewId, comment, productId } = req.body;
     const image = req.file;
-    if ( !reviewId || !comment ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+    
+    if ( !reviewId || !comment ) throw new BaseError("KEY_ERROR", 400);
+
     await reviewService.editReview( userId, reviewId, comment, image );
+
     const review = await reviewService.getReview( productId, userId );
-    return res.status(200).json({ message: "Update Review Success",review: review})
+    return res.status(200).json({ message: "Update Review Success", review })
 })
 
 const deleteReview = asyncWrap(async (req, res) => {
-    const { userId } = req.body;
+    const userId = req.user.id;
     const { reviewId, productId } = req.query;
-    if ( !reviewId ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+
+    if ( !reviewId ) throw new BaseError("KEY_ERROR", 400);
+
     await reviewService.deleteReview( userId, reviewId );
-    const result = await reviewService.getReview( productId, userId );
-    return res.status(200).json({review: result})
+
+    const review = await reviewService.getReview( productId, userId );
+    return res.status(200).json({ review });
 })
 
 
