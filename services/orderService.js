@@ -1,13 +1,10 @@
-const { orderDao, cartDao, userDao, productDao } = require("../models")
+const { orderDao, cartDao, userDao, productDao } = require("../models");
+const { BaseError } = require("../util/error");
 
 
 const getOrder = async ( userId ) => {
     const [ cart ] = await cartDao.getCartToCheckProduct( userId );
-    if ( !cart ) {
-        const err = new Error("Shopping cart not in selected products");
-        err.statusCode = 403;
-        throw err
-    }
+    if ( !cart ) throw new BaseError("Shopping cart not in selected products", 403);
 
     const user = await userDao.getOrderUserInfo( userId );
     const products = await orderDao.getOrderProduct( userId );
@@ -29,28 +26,16 @@ const getOrderList = async ( userId ) => {
 
 const createOrder = async ( userId, address, couponId, point, price ) => {
     const products = await cartDao.getCartToCheckProduct( userId );
-    if ( products.length == 0 ) {
-        const err = new Error("Shopping cart not in selected products");
-        err.statusCode = 403;
-        throw err;
-    }
+    if ( products.length == 0 ) throw new BaseError("Shopping cart not in selected products", 403);
 
     const user = await userDao.getOrderUserInfo( userId );
-    if ( user.point < point ) {
-        const err = new Error("There are few points");
-        err.statusCode = 400;
-        throw err;
-    }
+    if ( user.point < point ) throw new BaseError("There are few points", 403);
 
-    const savePoint = price * 0.05 * user.grade
+    const savePoint = price * 0.05 * user.grade;
     
     if ( couponId ) {
         const useCoupon = await userDao.getCoupon( userId, couponId );
-        if ( !useCoupon ) {
-            const err = new Error("Coupon does not exist");
-            err.statusCode = 400;
-            throw err;
-        }
+        if ( !useCoupon ) throw new BaseError("Coupon does not exist", 403);
     }
 
     const { insertId } = await orderDao.createOrderList( price, address );
@@ -62,11 +47,7 @@ const createOrder = async ( userId, address, couponId, point, price ) => {
 
 const createProductToOrder = async ( userId, productId, quantity ) => {
     const product = await productDao.getProductById( productId );
-    if ( !product ) {
-        const err = new Error("INVALID_PRODUCT");
-        err.statusCode = 406;
-        throw err;
-    }
+    if ( !product ) throw new BaseError("INVALID_PRODUCT", 406);
   
     const { cart } = await cartDao.getCartExists( userId, productId );
     if ( +cart ) {
@@ -74,7 +55,6 @@ const createProductToOrder = async ( userId, productId, quantity ) => {
     }
 
     await cartDao.addCart( userId, productId, quantity );
-
     return await cartDao.updateCheck( userId, productId );
 }
 

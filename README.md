@@ -25,7 +25,7 @@
 ### 적용 기술
 
 > - Front-End : React.js, sass, slick, react-modal
-> - Back-End : Node.js, Express framework, JSON WEB TOKEN, Bcrypt, My SQL, multer
+> - Back-End : Node.js, Express framework, JSON WEB TOKEN, Bcrypt, MySQL, multer
 > - Common : AWS(EC2,RDS), RESTful API
 
 
@@ -40,6 +40,31 @@
 5. 장바구니
 6. 결제
 7. 리뷰
+<br>
+<br>
+<br>
+### 나의 역할
+- JWT 토큰 검증
+- 베스트 상품 카테고리
+    - order 테이블을 활용해 상위 판매 제품 리스트 업
+- 장바구니 CRUD
+    - 장바구니 추가 (동일 제품이 장바구니에 존재 할 경우, 갯수 추가)
+    - 장바구니 물품 변경
+    - 장바구니 체크 유무
+    - 장바구니 체크된 물품 삭제
+- 결제 페이지, 주문 조회, 주문 생성
+    - 결제 페이지 진입시 장바구니에 체크 된 물품 리스트 업
+    - 상세페이지에서 주문시 장바구니를 제외한 상세페이지 물품만 주문
+    - 주문 성공시 order Table 기록 후 리뷰 권한 부여
+    - 주문 목록 조회
+-  리뷰 CRUD
+    - multer 를 이용한 S3 이미지 업로드 구현
+    - 리뷰 수정, 리뷰 삭제
+- 제품 상세 페이지
+    - 제품 상세 페이지당 카테고리 명, 필요한 사진 리스트 업
+- AWS (EC2, RDS, S3) 를 이용한 백엔드 서버 배포
+    - 백엔드 서버 유지를 위한 EC2 배포
+    - 백엔드 개발자간의 DB 통일성을 위한 RDS 배포
 
 <br>
 
