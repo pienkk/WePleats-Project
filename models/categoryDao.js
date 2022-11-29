@@ -3,29 +3,28 @@ const appDataSource = require("./dataSource");
 const getProductByCategory = async (category, id, color) => {
   let metaData = "";
   if (color) {
-    metaData = `colors.id = ${color} `;
+    metaData = `AND colors.id = ${color} `;
   }
   metaData += "GROUP BY pro.id";
   return await appDataSource.query(
     `SELECT
-            pro.id,
-            pro.name,
-            pro.price,
-            colors.color,
-            main.main_category,
-            cate.sub_category,
-            cate.id as category,
-            pro.new,
-            JSON_ARRAYAGG(thumb.thumbnail_url) AS thumbnail_url
-        FROM products AS pro
-        INNER JOIN colors ON pro.color = colors.id
-        INNER JOIN categorys AS cate ON pro.category = cate.id
-        INNER JOIN main_categorys AS main ON main.id = cate.main_category
-        INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
-        WHERE IF(? = 'main', main.id = ?,
-        IF(? = 'sub', cate.id = ?, null)
-        ) ${metaData}`,
-    [(category, id, category, id)]
+              pro.id,
+              pro.name,
+              pro.price,
+              colors.color,
+              main.main_category,
+              cate.sub_category,
+              cate.id as category,
+              pro.new,
+              JSON_ARRAYAGG(thumb.thumbnail_url) AS thumbnail_url
+          FROM products AS pro
+          INNER JOIN colors ON pro.color = colors.id
+          INNER JOIN categorys AS cate ON pro.category = cate.id
+          INNER JOIN main_categorys AS main ON main.id = cate.main_category
+          INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
+          WHERE IF(? = 'main', main.id = ?, IF(? = 'sub', cate.id = ?, null) ) ` +
+      metaData,
+    [category, id, category, id]
   );
 };
 
