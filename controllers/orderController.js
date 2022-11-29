@@ -31,8 +31,8 @@ const createProductToOrder = asyncWrap(async (req, res) => {
 
 const createOrder = asyncWrap(async (req, res) => {
     const { userId, address, couponId, point, price } = req.body;
-
-    if ( !address || !couponId ) {
+	console.log(req.body)
+    if ( !address || !price ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
