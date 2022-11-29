@@ -8,7 +8,7 @@
 
 - 개발기간 : 2022/09/19 ~ 2022/09/30
 - 개발 인원 : 프론트엔드 3명, 백엔드 2명
-- [백엔드 github 링크](https://github.com/wecode-bootcamp-korea/37-1st-WePleats-backend)
+- [프로젝트 회고 Blog Link](https://velog.io/@kisuk623/1%EC%B0%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0%EB%A1%9D)
 
 ### 프로젝트 선정이유
 
@@ -17,6 +17,7 @@
 ### 데모 영상(이미지 클릭)
 
 [프로젝트 영상](https://www.youtube.com/watch?v=Mao03-WqfxQ)
+[배포 링크](http://wepleats.s3-website.ap-northeast-2.amazonaws.com)
 
 <br>
 
@@ -25,7 +26,7 @@
 ### 적용 기술
 
 > - Front-End : React.js, sass, slick, react-modal
-> - Back-End : Node.js, Express framework, JSON WEB TOKEN, Bcrypt, My SQL, multer
+> - Back-End : Node.js, Express framework, JSON WEB TOKEN, Bcrypt, MySQL, multer
 > - Common : AWS(EC2,RDS), RESTful API
 
 
@@ -40,6 +41,31 @@
 5. 장바구니
 6. 결제
 7. 리뷰
+<br>
+<br>
+<br>
+### 나의 역할
+- JWT 토큰 검증<br>
+- 베스트 상품 카테고리<br>
+    - order 테이블을 활용해 상위 판매 제품 리스트 업<br>
+- 장바구니 CRUD<br>
+    - 장바구니 추가 (동일 제품이 장바구니에 존재 할 경우, 갯수 추가)<br>
+    - 장바구니 물품 변경<br>
+    - 장바구니 체크 유무<br>
+    - 장바구니 체크된 물품 삭제<br>
+- 결제 페이지, 주문 조회, 주문 생성<br>
+    - 결제 페이지 진입시 장바구니에 체크 된 물품 리스트 업<br>
+    - 상세페이지에서 주문시 장바구니를 제외한 상세페이지 물품만 주문<br>
+    - 주문 성공시 order Table 기록 후 리뷰 권한 부여<br>
+    - 주문 목록 조회<br>
+-  리뷰 CRUD<br>
+    - multer 를 이용한 S3 이미지 업로드 구현<br>
+    - 리뷰 수정, 리뷰 삭제<br>
+- 제품 상세 페이지<br>
+    - 제품 상세 페이지당 카테고리 명, 필요한 사진 리스트 업<br>
+- AWS (EC2, RDS, S3) 를 이용한 백엔드 서버 배포<br>
+    - 백엔드 서버 유지를 위한 EC2 배포<br>
+    - 백엔드 개발자간의 DB 통일성을 위한 RDS 배포<br>
 
 <br>
 
