@@ -1,9 +1,13 @@
-const appDataSource = require('./dataSource')
-
+const appDataSource = require("./dataSource");
 
 const getProductByCategory = async (category, id, color) => {
-    return await appDataSource.query(
-        `SELECT
+  let metaData = "";
+  if (color) {
+    metaData = `colors.id = ${color} `;
+  }
+  metaData += "GROUP BY pro.id";
+  return await appDataSource.query(
+    `SELECT
             pro.id,
             pro.name,
             pro.price,
@@ -20,16 +24,14 @@ const getProductByCategory = async (category, id, color) => {
         INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
         WHERE IF(? = 'main', main.id = ?,
         IF(? = 'sub', cate.id = ?, null)
-        )
-        AND IF(? = ?, colors.id = ?, "")
-        GROUP BY pro.id`, 
-        [category, id, category, id, color, color, color]
-    )
-}
+        ) ${metaData}`,
+    [(category, id, category, id)]
+  );
+};
 
 const getNewProductsList = async () => {
-    return await appDataSource.query(
-        `SELECT
+  return await appDataSource.query(
+    `SELECT
             pro.id,
             pro.name,
             pro.price,
@@ -45,13 +47,13 @@ const getNewProductsList = async () => {
         INNER JOIN main_categorys AS main ON main.id = cate.main_category
         INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
         WHERE pro.new = 1
-        GROUP BY pro.id`,
-    )
-}
+        GROUP BY pro.id`
+  );
+};
 
 const getBestCategory = async () => {
-    return await appDataSource.query(
-        `SELECT
+  return await appDataSource.query(
+    `SELECT
             pro.id,
             pro.name,
             pro.price,
@@ -71,12 +73,11 @@ const getBestCategory = async () => {
         INNER JOIN main_categorys AS main ON main.id = cate.main_category
         INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
         GROUP BY pro.id`
-    )
-}
-
+  );
+};
 
 module.exports = {
-    getProductByCategory,
-    getBestCategory,
-    getNewProductsList
-}
+  getProductByCategory,
+  getBestCategory,
+  getNewProductsList,
+};
