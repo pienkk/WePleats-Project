@@ -1,3 +1,5 @@
+
+
 const { userService } = require("../services");
 const { asyncWrap } = require("../middleware/errorControl");
 const { BaseError } = require("../util/error");
@@ -17,12 +19,19 @@ const signUp = asyncWrap(async (req, res) => {
 
     if ( !name || !email || !password || !birthday || !phone_number || !gender ) throw new BaseError("KEY_ERROR", 400);
 
-    await userService.signUp( name, email, password, birthday,phone_number, address, gender, profile_image );
+    await userService.signUp( name, email, password, birthday, phone_number, address, gender, profile_image );
     return res.status(201).json({ message: 'SignUp Success' });
+})
+
+const getNav = asyncWrap(async (req, res) => {
+    const { userId } = req.body;
+    const nav = await userService.getNav( userId );
+    return res.status(200).json({ nav })
 })
 
 
 module.exports = {
     signIn,
-    signUp
+    signUp,
+    getNav
 }

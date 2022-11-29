@@ -5,7 +5,7 @@ CREATE TABLE products(
     description VARCHAR(2000) NULL,
     category INT NOT NULL,
     color INT NULL,
-    price DECIMAL(10, 2) NOT NULL,
+    price INT NOT NULL,
     size_id INT NULL,
     new BOOLEAN NOT NULL DEFAULT 0,
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

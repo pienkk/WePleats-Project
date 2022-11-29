@@ -4,23 +4,25 @@ const { BaseError } = require("../util/error");
 
 
 const getNewProductsList = asyncWrap(async (req, res) => {
-    const getNewProducts = await categoryService.getNewProductsList();
-
-    res.status(201).json({ getNewProducts });
+    const getProducts = await categoryService.getNewProductsList()
+    
+    res.status(201).json({ getProducts })
 })
     
 const getProductByCategory = asyncWrap(async (req, res) => {
-    const { category, id, color } = req.query;
-    if ( !category || !id ) throw new BaseError("KEY_ERROR", 400);
-
+    const {category, id, color} = req.query
+    
+    if (!category || !id) throw new BaseError("KEY_ERROR", 400);
+    
     const getProducts = await categoryService.getProductByCategory(category, id, color)
-	res.status(201).json({ getProducts });
+    
+	  res.status(201).json({ getProducts });
 })
 
 const getBestCategory = asyncWrap(async (req, res) => {
-    const category = await categoryService.getBestCategory();
-
-    return res.status(200).json({ category });
+    const getProducts = await categoryService.getBestCategory()
+    
+    return res.status(200).json({ getProducts })
 })
 
 

@@ -1,6 +1,17 @@
 const appDataSource = require("./dataSource");
 
 
+const getProductById = async (productId) => {
+    const [ product ] = await appDataSource.query(
+        `SELECT
+            *
+        FROM products
+        WHERE id = ?`,
+        [productId]
+    )
+    return product
+}
+
 const getProductImage = async ( productId ) => {
     return await appDataSource.query(
         `SELECT
@@ -38,6 +49,7 @@ const getProductDetail = async ( productId ) => {
 
 
 module.exports = {
+    getProductById,
     getProductImage,
     getProductDetail
 }

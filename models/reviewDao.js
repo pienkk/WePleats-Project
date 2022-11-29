@@ -20,6 +20,17 @@ const getReview = async ( productId, userId, offset, limit ) => {
     )
 }
 
+const reviewCount = async ( productId ) => {
+    const [ result ] = await appDataSource.query(
+        `SELECT
+            count(*) AS reviewCount
+        FROM reviews
+        WHERE product_id = ?`,
+        [productId]
+    )
+    return result
+}
+
 const getImageToReview = async ( reviewId ) => {
     const [ image ] = await appDataSource.query(
         `SELECT
@@ -114,5 +125,6 @@ module.exports = {
     getReviewExists,
     createReview,
     updateReview,
+    reviewCount,
     deleteReview
 }

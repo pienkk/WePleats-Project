@@ -7,7 +7,7 @@ const getReview = async ( productId, userId, offset, limit  ) => {
 
     if ( !searchProduct ) throw new BaseError("INVALID_PRODUCT", 406);
 
-    return await reviewDao.getReview( productId, userId, +offset, +limit );
+    return await reviewDao.getReview( productId, userId, +offset || 0, +limit || 5 );
 }
 
 const getPhotoReview = async ( productId, userId, offset, limit ) => {

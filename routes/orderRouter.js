@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const accessToken = require("../middleware/auth")
+const { accessToken } = require("../middleware/auth")
 const { orderController } = require("../controllers")
 
 

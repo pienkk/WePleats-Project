@@ -115,6 +115,17 @@ const updateCheck = async ( userId, productId ) => {
     )
 }
 
+const getCartCount = async ( userId ) => {
+    const [result] = await appDataSource.query(
+        `SELECT
+            COUNT(*) as count
+        FROM carts
+        WHERE user_id = ?`,
+        [ userId ]
+    )
+    return result
+}
+
 
 module.exports = {
     getCartExists,
@@ -126,5 +137,6 @@ module.exports = {
     deleteCart,
     getCartToCheckProduct,
     deleteCheckProduct,
-    updateCheck
+    updateCheck,
+    getCartCount
 }

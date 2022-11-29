@@ -50,11 +50,12 @@ const createProductToOrder = async ( userId, productId, quantity ) => {
     if ( !product ) throw new BaseError("INVALID_PRODUCT", 406);
   
     const { cart } = await cartDao.getCartExists( userId, productId );
-    if ( +cart ) {
-        await cartDao.updateCart( userId, productId, quantity );
-    }
 
-    await cartDao.addCart( userId, productId, quantity );
+    if ( !+cart ) {
+        await cartDao.addCart( userId, productId, quantity );
+    }
+    await cartDao.updateCart( userId, productId, quantity );
+    
     return await cartDao.updateCheck( userId, productId );
 }
 
